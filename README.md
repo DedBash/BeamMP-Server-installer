@@ -16,8 +16,8 @@ Server run:
 # Instructions:
  1. Install git install git for cloning the repository: `apt install git`
  1. Download the install script: `git clone https://github.com/KIznaiver-system/unofficial-BeamMP-Server-installer.git`
- 2. Give the script rights to execute: `chmod +x install`
- 3. Start the script: `./install`
+ 2. Give the script rights to execute: `chmod +x install.sh`
+ 3. Start the script: `./install.sh`
  
 # The server script works like this
   1. Start server: `./server start`
@@ -28,4 +28,4 @@ Server run:
 # Links
 - [BeamMP](https://beammp.com/)
 - [BeamMP Github](https://github.com/BeamMP/BeamMP)
-- [My BeamMP Server](beammp.kiznaiver.zone) WIP
+
