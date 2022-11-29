@@ -40,8 +40,9 @@ elif [[ $linux == *"Debian"* ]];
 else
     echo "Your operating system is not supported, only Ubuntu and Debian are supported."
     echo "Good bye c:"
-    break
+    exit
 fi
+echo $dllink
 ## Update & upgrade system ##
 echo -e "Update your System"
 apt update -y && apt upgrade -y
@@ -108,14 +109,14 @@ install_beammp_script() {
     clear
     foldername=`cat /tmp/beamfoldername`
     mkdir $foldername
+    cd $foldername
     wget $dllink -O BeamMPServer
-    chmod +x $foldername/BeamMPServer
+    chmod +x BeamMPServer
     dialog  --backtitle "BeamMP server installer" \
             --title "BeamMP server creator" \
             --inputbox "Setup an Server Name" 10 40 2> /tmp/beamservername
     clear
     servername=`cat /tmp/beamservername`
-    cd $foldername
     screen -AmdS temp ./BeamMPServer
     wait 1
     dialog  --backtitle "BeamMP server installer" \
