@@ -1,145 +1,154 @@
-#Colors and other aguments
-command='\033[1;32m'
-version='\033[0;32m'
-name='\033[0;35m'
-default='\033[0m'
-hide='\033[0;30m'
-y='\033[0;36m'
-n='\033[0;31m'
-curver='0.8.8'
+### BeamMP Server installer ###
+## ##
+linux=`awk -F= '/^NAME/{print $2}' /etc/os-release`;
 serverag1='$1'
 serverag2='$0'
 sign1='"'
-rm README.md server
-#headstart
-echo -e "**************************************"
-echo -e "* unofficial BeamMP Server installer *"
-echo -e "*         By ${name}Kiznaiver System${default}        *"
-echo -e "*            ${version}Version ${curver}${default}            *"
-echo -e "**************************************"
-
-#Test if all important programs are installed
-echo -e "Check if all necessary programs are available"
-
-### wget check ###
-if dpkg-query -s wget 1>/dev/null 2>/dev/null; then
-    echo -e "${y} wget is installed ${default}"
-else
-  echo -e "${n} wget is not installed ${default}"
-  echo -e "You can download it with${command} sudo apt install wget -y${default}"
-  ### screen check ### error ###
-  if dpkg-query -s screen 1>/dev/null 2>/dev/null; then
-      echo -e "${y} screen is installed ${default}"
-  else
-      echo -e "$n screen is not installed ${default}"
-      echo -e "You can download it with sudo ${command}sudo apt install screen -y${default}"
-  fi
-  ### unzip check ### error ###
-  if dpkg-query -s unzip 1>/dev/null 2>/dev/null; then
-      echo -e "${y} unzip is installed ${default}"
-  else
-      echo -e "$n unzip is not installed ${default}"
-      echo -e "You can download it with sudo ${command}sudo apt unzip wget -y${default}"
-  fi
-  ### liblua5.3-dev check ### error ###
-  if dpkg-query -s liblua5.3-dev 1>/dev/null 2>/dev/null; then
-    echo -e "${y} liblua5.3-dev is installed ${default}"
-  else
-    echo -e "$n liblua5.3-dev is not installed ${default}"
-    echo -e "You can download it with sudo ${command}sudo apt install liblua5.3-dev -y${default}"
-    exit
-  fi
+yellow="\e[33m"
+red="\e[31m"
+green="\e[32m"
+nocolor="\e[0m"
+## MOTD ##
+echo -e "${yellow}                                                                                
+${yellow}                                #((((((((((%                                    
+${yellow}                             ((          (                                      
+${yellow}                          ((/            (                                      
+${yellow}                       (((               (                                      
+${yellow}     #(%*                                   /%#((((###%%&,,********,&%#((((%(   
+${yellow}            ${nocolor}@@@@@@@                            @@@@   @@@.  @@@@@@              
+${yellow}         #  ${nocolor}@@@@@%  #@@@@@  @@@@@  @@@@@@@@@@  @@@@  @@@@  @@@ %@@              
+${yellow}        %  ${nocolor}/@@  @@ %@@@@@@ @@@@@@ #@% &@@ @@& *@@ @@@/&@@  @@,,${yellow}     #             
+${yellow}       (   ${nocolor}@@@@@@   @@@@@  @@@@@  @@  @@  @@  @@  @@  @@   @@  ${yellow}     #@        .(  
+${yellow}       (           (       #%##############%#%&                   (  %%%        
+${yellow}        %#      &(                                     %#       #%              
+${nocolor}                       BeamMP Server isntaller by Dedbash                        "
+## Check root ##
+if [ "$EUID" -ne 0 ]
+  then echo -e "please start the program as root"
+    echo -e "like sudo $0"
+    echo "Good bye c:"
+    break
+else 
+    echo -e "You are root"
 fi
-
-### screen check ###
-if dpkg-query -s screen 1>/dev/null 2>/dev/null; then
-    echo -e "${y} screen is installed ${default}"
+if [[ $linux == *"Ubuntu"* ]];
+    then echo "The operating system Ubuntu is supported"
+    dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-22.04"
+elif [[ $linux == *"Debian"* ]];
+    then echo "The operating system Debian is supported"
+    dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-debian-11"
 else
-    echo -e "$n screen is not installed ${default}"
-    echo -e "You can download it with sudo ${command}sudo apt install screen -y${default}"
-    ### unzip check ### error ###
-    if dpkg-query -s unzip 1>/dev/null 2>/dev/null; then
-        echo -e "${y} unzip is installed ${default}"
-    else
-        echo -e "$n unzip is not installed ${default}"
-        echo -e "You can download it with sudo ${command}sudo apt unzip wget -y${default}"
-    fi
-    ### liblua check ### error ###
-    if dpkg-query -s liblua5.3-dev 1>/dev/null 2>/dev/null; then
-      echo -e "${y} liblua5.3-dev is installed ${default}"
-    else
-      echo -e "$n liblua5.3-dev is not installed ${default}"
-      echo -e "You can download it with sudo ${command}sudo apt install liblua5.3-dev -y${default}"
-    fi
-    exit
+    echo "Your operating system is not supported, only Ubuntu and Debian are supported."
+    echo "Good bye c:"
+    break
 fi
-
-### unzip check ###
-if dpkg-query -s unzip 1>/dev/null 2>/dev/null; then
-    echo -e "${y} unzip is installed ${default}"
-else
-    echo -e "$n unzip is not installed ${default}"
-    echo -e "You can download it with sudo ${command}sudo apt unzip wget -y${default}"
-    ### liblua check ### error ###
-    if dpkg-query -s liblua5.3-dev 1>/dev/null 2>/dev/null; then
-      echo -e "${y} liblua5.3-dev is installed ${default}"
-    else
-      echo -e "$n liblua5.3-dev is not installed ${default}"
-      echo -e "You can download it with sudo ${command}sudo apt install liblua5.3-dev -y${default}"
-    fi
-    exit
+## Update & upgrade system ##
+echo -e "Update your System"
+apt update -y && apt upgrade -y
+## install reqs ##
+if dpkg-query -s dialog 1>/dev/null 2>/dev/null;
+    then echo -e "${green}dialog is installed${nocolor}"
+    dialoginstall=""
+else 
+    echo -e "${red}dialog will be installed${nocolor}"
+    dialoginstall="dialog"
 fi
-
-### liblua check ###
-if dpkg-query -s liblua5.3-dev 1>/dev/null 2>/dev/null; then
-  echo -e "${y} liblua5.3-dev is installed ${default}"
-else
-  echo -e "$n liblua5.3-dev is not installed ${default}"
-  echo -e "You can download it with sudo ${command}sudo apt install liblua5.3-dev -y${default}"
-  exit
+if dpkg-query -s wget 1>/dev/null 2>/dev/null;
+    then echo -e "${green}wget is installed${nocolor}"
+    wgetinstall=""
+else 
+    echo -e "${red}wget will be installed${nocolor}"
+    wgetinstall="wget"
 fi
+if dpkg-query -s unzip 1>/dev/null 2>/dev/null;
+    then echo -e "${green}unzip is installed${nocolor}"
+    unzipinstall=""
+else 
+    echo -e "${red}unzip will be installed${nocolor}"
+    unzipinstall="unzip"
+fi
+if dpkg-query -s screen 1>/dev/null 2>/dev/null;
+    then echo -e "${green}screen is installed${nocolor}"
+    screeninstall=""
+else 
+    echo -e "${red}screen will be installed${nocolor}"
+    screeninstall="screen"
+fi  
+if dpkg-query -s liblua5.3-dev 1>/dev/null 2>/dev/null;
+    then echo -e "${green}liblua5.3-dev is installed${nocolor}"
+    liblua53devinstall=""
+else 
+    echo -e "${red}liblua5.3-dev will be installed${nocolor}"
+    liblua53devinstall="liblua5.3-dev"
+fi 
+apt install -y $dialoginstall $wgetinstall $unzipinstall $screeninstall $liblua53devinstall
+## Install BeamMP ##
+install_beammp() {
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP server creator" \
+            --inputbox "Full folder Path !!no / at the end!!" 10 40 2> /tmp/beamfoldername
+    clear
+    foldername=`cat /tmp/beamfoldername`
+    mkdir $foldername
+    cd $foldername
+    wget $dllink -O BeamMPServer
+    chmod +x BeamMPServer
+    cd ..
+    rm -r /tmp/beamfoldername linux
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP server creator" \
+            --msgbox "The server was installed in the folder $foldername and can be executed there." 0 0
+    clear
+}
+## Install BeamMP & script##
+install_beammp_script() {
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP server creator" \
+            --inputbox "Full folder Path !!no / at the end!!" 10 40 2> /tmp/beamfoldername
+    clear
+    foldername=`cat /tmp/beamfoldername`
+    mkdir $foldername
+    wget $dllink -O BeamMPServer
+    chmod +x $foldername/BeamMPServer
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP server creator" \
+            --inputbox "Setup an Server Name" 10 40 2> /tmp/beamservername
+    clear
+    servername=`cat /tmp/beamservername`
+    cd $foldername
+    screen -AmdS temp ./BeamMPServer
+    wait 1
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP server creator INFO" \
+            --colors --msgbox "In the next step you can edit the server config, edit only what you know and make sure to enter your authkey
 
-install_all(){
-  read -p "What should the server folder be called? " fn
-  if [ -d $fn ];
-  then
-    read -p "$fn already exists is to be driven forward [y/n] > " fne
-    case $fne in
-        [Yy]* ) cd $fn;;
-        [Nn]* ) install_all; exit;;
-    esac
-  else
-    mkdir $fn
-    cd $fn
-  fi
-  echo Downloading:
-  wget https://beammp.com/server/BeamMP_Server.zip -q --show-progress
-  unzip BeamMP_Server.zip 1>/dev/null 2>/dev/null
-  rm BeamMP-Server.exe
-  rm BeamMP_Server.zip
-  chmod +x BeamMP-Server-linux
-  screen -AmdS install_temp ./BeamMP-Server-linux
-  read -p "what should the server be called internally? > " sn1
-  exec 3<> server
+\Z6AuthKey:\Z0
+                You can create an AuthKey at: https://beammp.com/k/dashboard
+                Texthelp: https://wiki.beammp.com/en/home/server-installation (2. Obtaining an Authentication Key)" 0 0
+
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP Server Config" \
+            --editbox ServerConfig.toml 40 80
+    exec 3<> server
     echo "case $serverag1 in
     start)
-        screen -AmdS $sn1 ./BeamMP-Server-linux
+        screen -AmdS $servername ./BeamMPServer
         sleep 0.5
-        echo The $sn1 was started
+        echo The $servername was started
     ;;
     stop)
-        screen -r $sn1 -X quit
+        screen -r $servername -X quit
         sleep 0.5
-        echo The $sn1 was stopped
+        echo The $servername was stopped
     ;;
     restart)
-        screen -r $sn1 -X quit
+        screen -r $servername -X quit
         sleep 0.5
-        echo The $sn1 is restarted
-        screen -AmdS $sn1 ./BeamMP-Server-linux
+        echo The $servername is restarted
+        screen -AmdS $servername ./BeamMPServer
     ;;
     terminal)
-	screen -r $sn1
+	screen -r $servername
     ;;
     help)
 	echo ${sign1}These are all commands:
@@ -151,118 +160,76 @@ install_all(){
     *)
         echo Invalid usage: $serverag2 {start|stop|restart|terminal}
 esac" >&3
-  exec 3>&-
-  chmod +x server
-  echo ⠀
-  echo -e "Before you start the server you have to edit the server. with ${command}nano /${fn}/ServerConfig.toml${default} so that you can enter your authkey."
-  echo ⠀
-  sleep 1
-  echo ⠀
-  echo -e "Then you can start the server with ${command}./${fn}/server start${default}."
-  echo ⠀
-  sleep 1
+    cd ..
+    rm -r /tmp/beamfoldername /tmp/beamservername server
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP server creator" \
+            --msgbox "The server was $servername installed in the folder $foldername.
+            You can start the server with: cd $foldername && ./BeamMPServer" 0 0
+    clear
 }
-#Installs only the server script
-install_script(){
-  read -p "What should the server folder be called? " fn
-  if [ -d $fn ];
-  then
-    cd $fn
-  else
-    read -p "$fn name is not an odner do you want to [c]reate it or [t]ry again" fne
-    case $fne in
-        [Tt]* ) install_script; exit;;
-        [Cc]* ) mkdir $fn; cd $fn;;
-    esac
-  fi
-  read -p "what should the server be called internally? > " sn2
-  exec 3<> server
-    echo "case $serverag1 in
-    start)
-        screen -AmdS $sn2 ./BeamMP-Server-linux
-        sleep 0.5
-        echo The $sn2 was started
-    ;;
-    stop)
-        screen -r $sn2 -X quit
-        sleep 0.5
-        echo The $sn2 was stopped
-    ;;
-    restart)
-        screen -r $sn2 -X quit
-        sleep 0.5
-        echo The $sn2 is restarted
-        screen -AmdS $sn2 ./BeamMP-Server-linux
-    ;;
-    terminal)
-  screen -r $sn2
-    ;;
-    help)
-    echo ${sign1}These are all commands:
-    ./server start
-    ./server restart
-    ./server stop
-    ./server terminal${sign1}
-    ;;
-    *)
-        echo Invalid usage: $serverag2 {start|stop|restart|terminal}
-esac" >&3
-  exec 3>&-
-  sleep 1
-  echo ⠀
-  echo -e "Then you can start the server with ${command}./${fn}/server start${default}."
-  echo ⠀
-  sleep 1
+## Info ##
+info() {
+    dialog  --backtitle "BeamMP server installer" \
+            --title "BeamMP server creator INFO" \
+            --colors --msgbox "\Z6What means:\Z0
+            \Z7Install only BeamMP:\Z0 The option ensures that the BeamMP server executable is downloaded in an order and also gets rights
+            \Z7Install BeamMP and Server script:\Z0 The option ensures that the BeamMP server executable is downloaded in an order and a script is created with which you can control the server.
+            
+            
+\Z6The Script:\Z0
+    ./server name start: Starts the server
+    ./server name stop: Stops the server
+    ./server name restart: Restarts the server
+    ./server name terminal: Opens the terminal from the server 
+
+    
+\Z6AuthKey:\Z0
+    You can create an AuthKey at: https://beammp.com/k/dashboard
+    Texthelp: https://wiki.beammp.com/en/home/server-installation (2. Obtaining an Authentication Key)
+
+    
+\Z6Info:\Z0
+    Script was written and mainteaned by DedBash
+    Web: https://dedbash.xyz
+    Github: https://github.com/DedBash
+    Version 2.00.22.11
+    
+
+\Z6BeamMP:\Z0
+    Server Version: v3.1.1
+    Web: https://beammp.com/
+    Github: https://github.com/BeamMP
+    Discord: https://discord.gg/beammp" 0 0
 }
-#Installs only the BeamMP server
-install_server(){
-  read -p "What should the server folder be called? " fn
-  if [ -d $fn ];
-  then
-    read -p "$fn Already exists is to be driven forward [y/n] > " fne
-    case $fne in
-        [Yy]* ) cd $fn;;
-        [Nn]* ) install_server; exit;;
-    esac
-  else
-    mkdir $fn
-    cd $fn
-  fi
-  echo Downloding:
-  wget https://beammp.com/server/BeamMP_Server.zip -q --show-progress
-  unzip BeamMP_Server.zip 1>/dev/null 2>/dev/null
-  rm BeamMP-Server.exe
-  rm BeamMP_Server.zip
-  chmod +x BeamMP-Server-linux
-  screen -AmdS install_temp ./BeamMP-Server-linux
-  sleep 1
-  echo ⠀
-  echo -e "Before you start the server you have to edit the ServerConfig.toml with ${command}nano /${fn}/ServerConfig.toml${default} so that you can enter your authkey."
-  echo ⠀
-  sleep 1
+## nogui ##
+nogui() {
+    mkdir OUTPUT
+    cd OUTPUT
+    wget $dllink -O BeamMPServer
+    chmod +x BeamMPServer
+    screen -AmdS temp ./BeamMPServer
 }
-about(){
-  echo -e "The script is from ${name}Kiznaiver System${default}"
-  echo -e "I have nothing to do directly with the BeamMP team I just want to support it because I think the server install on the website is a little too complicated"
-  echo -e "Links:
-  My GitHub:       https://github.com/KIznaiver-system/unofficial-BeamMP-Server-installer
-  BeamMP´s Github: https://github.com/BeamMP/BeamMP
-  BeamMP:          https://beammp.com/"
-  sleep 2
+## Start Dialog ##
+startdialog(){
+    dialog1=$(dialog    --backtitle "BeamMP server installer" \
+                        --title "Select what you want to do" \
+                        --menu "Choose an option with which you want to continue" 0 0 4 1 "Install only BeamMP" 2 "Install BeamMP and Server script" 3 "Info about" 4 "Exit"\
+                        3>&1 1>&2 2>&3 3>&-)
+    clear
+    if [ $dialog1 = 1 ]
+        then install_beammp
+    elif [ $dialog1 = 2 ]
+        then install_beammp_script
+    elif [ $dialog1 = 3 ]
+        then info
+        startdialog
+    elif [ $dialog1 = 4 ]
+        then echo Good bye c:
+    fi
 }
-#Query what should be done
-while true; do
-    echo "What do you want to do
-    1. Install only the BeamMP server
-    2. Only the server management script
-    3. Install both
-    4. About this script"
-    read -p "> " yn
-    case $yn in
-        [1]* ) install_server; exit;;
-        [2]* ) install_script; exit;;
-        [3]* ) install_all; exit;;
-        [4]* ) about;;
-        * ) echo "Please answer 1, 2, 3 or 4.";;
-    esac
-done
+case $1 in
+    nogui) nogui
+    ;;
+    *) startdialog
+esac
