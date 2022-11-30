@@ -1,6 +1,7 @@
 ### BeamMP Server installer ###
 ## ##
 linux=`awk -F= '/^NAME/{print $2}' /etc/os-release`;
+release=`awk -F= '/^VERSION_ID/{print $2}' /etc/os-release`;
 serverag1='$1'
 serverag2='$0'
 sign1='"'
@@ -27,22 +28,24 @@ if [ "$EUID" -ne 0 ]
   then echo -e "please start the program as root"
     echo -e "like sudo $0"
     echo "Good bye c:"
-    break
+    exit 0
 else 
     echo -e "You are root"
 fi
-if [[ $linux == *"Ubuntu"* ]];
-    then echo "The operating system Ubuntu is supported"
-    dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-22.04"
-elif [[ $linux == *"Debian"* ]];
-    then echo "The operating system Debian is supported"
-    dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-debian-11"
-else
-    echo "Your operating system is not supported, only Ubuntu and Debian are supported."
+if [[ $linux == *"Ubuntu"* ]] && [[ $release == *"20.04"* ]]
+then    echo "The operating system Ubuntu 20.04 is supported"
+        dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-20.04"
+elif [[ $linux == *"Ubuntu"* ]] && [[ $release == *"22.04"* ]]
+then    echo "The operating system Ubuntu 22.04 is supported"
+        dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-22.04"
+elif [[ $linux == *"Debian"* ]] && [[ $release == *"11"* ]]
+then    echo "The operating system Debian 11 is supported"
+        llink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-debian-11"
+else 
+    echo "It currently only supports Ubuntu 20.04, 22.04 and Debian 11."
     echo "Good bye c:"
-    exit
+    exit 0
 fi
-echo $dllink
 ## Update & upgrade system ##
 echo -e "Update your System"
 apt update -y && apt upgrade -y
