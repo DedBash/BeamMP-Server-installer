@@ -32,6 +32,7 @@ if [ "$EUID" -ne 0 ]
 else 
     echo -e "You are root"
 fi
+## Check Version ##
 if [[ $linux == *"Ubuntu"* ]] && [[ $release == *"20.04"* ]]
 then    echo "The operating system Ubuntu 20.04 is supported"
         dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-20.04"
