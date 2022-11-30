@@ -33,7 +33,7 @@ else
 fi
 if [[ $linux == *"Ubuntu"* ]];
     then echo "The operating system Ubuntu is supported"
-    dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-22.04"
+    dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-20.04"
 elif [[ $linux == *"Debian"* ]];
     then echo "The operating system Debian is supported"
     dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-debian-11"
