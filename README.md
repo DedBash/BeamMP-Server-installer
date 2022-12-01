@@ -8,8 +8,8 @@ This is a third party script. I am not a developer of BeamMP and I am not on the
 <b>BeamMP:</b><br>
 ⠀⠀[3.1.1](https://github.com/BeamMP/BeamMP-Server/releases/tag/v3.1.1)<br>
 <b>Linux:</b><br>
-⠀⠀Debian<br>
-⠀⠀Ubuntu
+⠀⠀Debian 11<br>
+⠀⠀Ubuntu 20.04/22.04
 
 
 # Instructions:
