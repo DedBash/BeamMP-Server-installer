@@ -41,7 +41,7 @@ then    echo "The operating system Ubuntu 22.04 is supported"
         dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-ubuntu-22.04"
 elif [[ $linux == *"Debian"* ]] && [[ $release == *"11"* ]]
 then    echo "The operating system Debian 11 is supported"
-        llink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-debian-11"
+        dllink="https://github.com/BeamMP/BeamMP-Server/releases/download/v3.1.1/BeamMP-Server-debian-11"
 else 
     echo "It currently only supports Ubuntu 20.04, 22.04 and Debian 11."
     echo "Good bye c:"
