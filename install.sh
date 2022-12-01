@@ -214,6 +214,7 @@ nogui() {
     wget $dllink -O BeamMPServer
     chmod +x BeamMPServer
     screen -AmdS temp ./BeamMPServer
+    echo "okay"
 }
 ## Start Dialog ##
 startdialog(){
