@@ -34,5 +34,5 @@ This is a third party script. I am not a developer of BeamMP and I am not on the
 <img src="https://github.com/DedBash/dedbash-media/blob/main/readme/Beam01.png" title="IMG01">
 <img src="https://github.com/DedBash/dedbash-media/blob/main/readme/Beam02.png" title="IMG02">
 <img src="https://github.com/DedBash/dedbash-media/blob/main/readme/Beam03.png" title="IMG03">
-<img src="https://github.com/DedBash/dedbash-media/blob/main/readme/Beam014.png" title="IMG04">
+<img src="https://github.com/DedBash/dedbash-media/blob/main/readme/Beam04.png" title="IMG04">
 </details>
